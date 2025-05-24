@@ -1,18 +1,19 @@
+# 1. Start from Python 3.11 slim
 FROM python:3.11-slim
 
-# Install Tesseract OCR engine
+# 2. Install Tesseract for OCR
 RUN apt-get update && apt-get install -y tesseract-ocr
 
-# Set working directory
+# 3. Create and set /app as our working directory
 WORKDIR /app
 
-# Copy and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# 4. Copy only the requirements for the OCR module and install them
+COPY ocr/requirements.txt ./ocr/requirements.txt
+RUN pip install --no-cache-dir -r ocr/requirements.txt
 
-# Copy the rest of the code
+# 5. Copy the rest of your project into /app
 COPY . .
 
-# Default command (we’ll run this manually for now)
-CMD ["python", "ocr.py"]
+# 6. Default command: run the OCR script from inside the ocr folder
+CMD ["python", "ocr/ocr.py"]
 
